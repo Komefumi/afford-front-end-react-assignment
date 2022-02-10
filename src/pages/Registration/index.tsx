@@ -1,4 +1,16 @@
 import { useState, useCallback, useEffect, useMemo, ChangeEvent } from "react";
+import {
+  Container,
+  Box,
+  TextField,
+  Button,
+  TextFieldProps,
+  Typography,
+  Grid,
+  styled,
+} from "@mui/material";
+import { Save as SaveIcon } from "@mui/icons-material";
+import { FullSizeInGridOfAllSizes as TextFieldFullWidth } from "@ui/InputFullWidth";
 import { performRegistration } from "../../api";
 import { PerformRegistrationStatusEnum as APIStatusEnum } from "../../types/api";
 import { SetterFn } from "../../types/alias";
@@ -27,6 +39,14 @@ export default function RegistrationPage() {
       setter(value);
     };
   }, []);
+
+  /*
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+   */
+
+  const handleChange = (_event: ChangeEvent<HTMLInputElement>) => {};
 
   const submitForRegistration = useCallback(
     (evt: ChangeEvent<HTMLFormElement>) => {
@@ -76,46 +96,67 @@ export default function RegistrationPage() {
   );
 
   return (
-    <div>
+    <Container maxWidth="sm" sx={{ padding: 5 }}>
       <form onSubmit={submitForRegistration}>
-        <div>
-          <input
+        <Box sx={{ marginBottom: 5 }}>
+          <Typography variant="h3" component="h1" color="primary">
+            Register Here
+          </Typography>
+        </Box>
+        <Grid container spacing={2}>
+          <TextFieldFullWidth
             type="text"
-            name="firstName"
+            name="lastName"
+            label="First Name"
+            placeholder="Your First Name..."
             value={firstName}
             onChange={generateChangeHandler(setFirstName)}
           />
-          <input
+          <TextFieldFullWidth
             type="text"
             name="lastName"
+            label="Last Name"
+            placeholder="Your Last Name..."
             value={lastName}
             onChange={generateChangeHandler(setLastName)}
           />
-          <input
+          <TextFieldFullWidth
             type="email"
             name="email"
+            label="Email"
+            placeholder="Your Email Address..."
             value={email}
             onChange={generateChangeHandler(setEmail)}
           />
-          <input
+          <TextFieldFullWidth
             type="password"
             name="password"
+            label="Password"
+            placeholder="Choose a strong password"
             value={password}
             onChange={generateChangeHandler(setPassword)}
           />
-          <input
+          <TextFieldFullWidth
             type="password"
             name="passwordRepeat"
+            label="Repeat Password"
+            placeholder="Ensure passwords match"
             value={passwordRepeat}
             onChange={generateChangeHandler(setPasswordRepeat)}
           />
-        </div>
-        <div>
-          <button disabled={!isSubmitable} className="reg-btn">
+        </Grid>
+        <Box sx={{ marginTop: 2 }}>
+          <Button
+            type="submit"
+            startIcon={<SaveIcon />}
+            variant="contained"
+            color="primary"
+            disabled={!isSubmitable}
+          >
             Register
-          </button>
-        </div>
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Container>
   );
 }
